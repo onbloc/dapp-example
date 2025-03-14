@@ -12,7 +12,6 @@
   pointer-events: none;
 }
 
-
 .app-header {
   display: flex;
   flex-direction: column;
@@ -24,8 +23,12 @@
   justify-content: center;
 }
 
-.app-main>* {
+.app-main > * {
   margin: 20px 0;
+}
+
+.column-key {
+  max-width: 95px;
 }
 
 .execute-button {

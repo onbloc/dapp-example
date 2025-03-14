@@ -6,15 +6,14 @@ import CheckWallet from './components/check-wallet';
 import GettingAccount from './components/getting-account';
 import TokenTransfer from './components/token-transfer';
 import PackageRequest from './components/package-request';
+import QueryEval from './components/query-eval';
 
 function App() {
   return (
-    <div className="app">
-      <header className="app-header">
-        <img src={logo} className="app-logo" alt="logo" />
-        <p>
-          Dapp Examples
-        </p>
+    <div className='app'>
+      <header className='app-header'>
+        <img src={logo} className='app-logo' alt='logo' />
+        <p>Dapp Examples</p>
       </header>
 
       <main className='app-main'>
@@ -40,6 +39,13 @@ function App() {
           <Col lg={12}>
             <PackageRequest />
           </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col lg={12}>
+            <QueryEval />
+          </Col>
+          <Col lg={12} />
         </Row>
       </main>
     </div>

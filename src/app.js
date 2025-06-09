@@ -45,7 +45,9 @@ function App() {
           <Col lg={12}>
             <QueryEval />
           </Col>
-          <Col lg={12} />
+          <Col lg={12}>
+            <QueryEval />
+          </Col>
         </Row>
       </main>
     </div>

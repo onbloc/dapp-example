@@ -2,14 +2,8 @@ import React, { useState } from 'react';
 import { Button, Card, Col, Input, Radio, Row } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { existsWallet } from '../../methods/injection';
-import { switchNetwork } from '../../methods/cosmos';
-
-// Chain IDs registered by default in the Adena extension (see
-// packages/adena-extension/src/resources/chains/chains.json).
-const GNO_NETWORKS = {
-  mainnet: { chainId: 'gnoland1' },
-  testnet: { chainId: 'staging' },
-};
+import { GNO_NETWORKS, switchNetwork } from '../../methods/cosmos';
+import { formatError } from '../../utils/json';
 
 function SwitchNetworkGno() {
   const [network, setNetwork] = useState('mainnet');
@@ -29,7 +23,7 @@ function SwitchNetworkGno() {
 
     switchNetwork(chainId.trim())
       .then(res => setResponse(JSON.stringify(res, null, 2)))
-      .catch(error => setResponse(JSON.stringify(error, Object.getOwnPropertyNames(error), 2)));
+      .catch(error => setResponse(formatError(error)));
   };
 
   return (

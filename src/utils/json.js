@@ -3,3 +3,6 @@ export const bigintReplacer = (_key, value) =>
 
 export const stringify = (obj, indent = 2) =>
   JSON.stringify(obj, bigintReplacer, indent);
+
+export const formatError = (error) =>
+  JSON.stringify(error, Object.getOwnPropertyNames(error), 2);

@@ -3,6 +3,7 @@ import { Button, Card, Col, Input, Row, Space } from "antd";
 
 import { existsWallet, getAccount, sendToken } from "../../methods/injection";
 import TextArea from "antd/es/input/TextArea";
+import { formatError } from "../../utils/json";
 
 function TokenTransfer() {
   const [fromAddress, setFromAddress] = useState("");
@@ -19,7 +20,7 @@ function TokenTransfer() {
     const sendAmount = `${tokenAmount.trim()}${tokenDenom.trim()}`;
     sendToken(fromAddress, toAddress, sendAmount)
       .then(response => setResponse(JSON.stringify(response, null, 2)))
-      .catch(error => console.error(error))
+      .catch(error => setResponse(formatError(error)))
   };
 
   const handleGetAccount = async (setter) => {
@@ -35,7 +36,7 @@ function TokenTransfer() {
         setResponse(JSON.stringify(res, null, 2));
       }
     } catch (error) {
-      console.error(error);
+      setResponse(formatError(error));
     }
   };
 

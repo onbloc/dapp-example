@@ -3,6 +3,7 @@ import { Button, Card, Col, Input, Row, Space } from "antd";
 
 import { existsWallet, getAccount, doContractPackageFunction } from "../../methods/injection";
 import TextArea from "antd/es/input/TextArea";
+import { formatError } from "../../utils/json";
 
 function PackageRequest() {
   const [caller, setCaller] = useState("");
@@ -18,7 +19,7 @@ function PackageRequest() {
 
     doContractPackageFunction(caller, func, pkgPath, argument)
       .then(response => setResponse(JSON.stringify(response, null, 2)))
-      .catch(error => console.error(error))
+      .catch(error => setResponse(formatError(error)))
   };
 
   const handleGetAccount = async (setter) => {
@@ -34,7 +35,7 @@ function PackageRequest() {
         setResponse(JSON.stringify(res, null, 2));
       }
     } catch (error) {
-      console.error(error);
+      setResponse(formatError(error));
     }
   };
 

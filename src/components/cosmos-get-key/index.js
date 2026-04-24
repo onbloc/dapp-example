@@ -3,6 +3,7 @@ import { Button, Card, Col, Input, Row } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { existsWallet } from '../../methods/injection';
 import { bytesToBase64, getCosmosKey } from '../../methods/cosmos';
+import { formatError } from '../../utils/json';
 
 function CosmosGetKey() {
   const [chainId, setChainId] = useState('atomone-testnet-1');
@@ -30,7 +31,7 @@ function CosmosGetKey() {
           : res;
         setResponse(JSON.stringify(rendered, null, 2));
       })
-      .catch(error => setResponse(JSON.stringify(error, Object.getOwnPropertyNames(error), 2)));
+      .catch(error => setResponse(formatError(error)));
   };
 
   return (

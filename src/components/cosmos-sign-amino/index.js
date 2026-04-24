@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Card, Col, Input, Radio, Row, Space } from 'antd';
+import { Button, Card, Col, Radio, Row } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { StargateClient } from '@cosmjs/stargate';
 import { existsWallet } from '../../methods/injection';
@@ -9,6 +9,9 @@ import {
   getCosmosKey,
   signCosmosAmino,
 } from '../../methods/cosmos';
+import { formatError, stringify } from '../../utils/json';
+import { FormRow, AddressRow } from '../_shared/form-rows';
+import { handleCosmosGetAccount } from '../_shared/cosmos-account';
 
 const DEFAULT_GAS = '200000';
 const DEFAULT_FEE_AMOUNT = '5000';
@@ -31,21 +34,8 @@ function CosmosSignAmino() {
     setRpc(ATOMONE_NETWORKS[next].rpc);
   };
 
-  const handleGetAccount = async (setter) => {
-    if (!existsWallet()) {
-      return;
-    }
-    try {
-      const res = await getCosmosKey(chainId.trim());
-      if (res?.status === 'success' && res.data?.bech32Address) {
-        setter(res.data.bech32Address);
-      } else {
-        setResponse(JSON.stringify(res, null, 2));
-      }
-    } catch (error) {
-      setResponse(JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
-    }
-  };
+  const onGetAccount = (setter) =>
+    handleCosmosGetAccount({ chainId, setter, setResponse });
 
   const onClickExecuteButton = async () => {
     if (!existsWallet()) {
@@ -84,46 +74,13 @@ function CosmosSignAmino() {
       });
 
       const res = await signCosmosAmino(chainId.trim(), signer, signDoc);
-      setResponse(JSON.stringify(res, null, 2));
+      setResponse(stringify(res));
     } catch (error) {
-      setResponse(JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
+      setResponse(formatError(error));
     } finally {
       setBusy(false);
     }
   };
-
-  const renderRow = (label, value, onChange, placeholder) => (
-    <Row gutter={16} key={label}>
-      <Col lg={6}>
-        <span>{label}: </span>
-      </Col>
-      <Col lg={18} flex>
-        <Input
-          value={value}
-          onChange={event => onChange(event.target.value)}
-          placeholder={placeholder}
-        />
-      </Col>
-    </Row>
-  );
-
-  const renderAddressRow = (label, value, onChange, placeholder) => (
-    <Row gutter={16} key={label}>
-      <Col lg={6}>
-        <span>{label}: </span>
-      </Col>
-      <Col lg={18} flex>
-        <Space.Compact style={{ width: '100%' }}>
-          <Input
-            value={value}
-            onChange={event => onChange(event.target.value)}
-            placeholder={placeholder}
-          />
-          <Button onClick={() => handleGetAccount(onChange)}>Get Account</Button>
-        </Space.Compact>
-      </Col>
-    </Row>
-  );
 
   return (
     <Card className="card" title="Cosmos — Sign Amino (MsgSend)">
@@ -139,12 +96,12 @@ function CosmosSignAmino() {
         </Col>
       </Row>
 
-      {renderRow('Chain ID', chainId, setChainId)}
-      {renderRow('RPC URL', rpc, setRpc)}
-      {renderAddressRow('To Address', toAddress, setToAddress)}
-      {renderRow('Amount', amount, setAmount)}
-      {renderRow('Denom', denom, setDenom)}
-      {renderRow('Memo', memo, setMemo)}
+      <FormRow label="Chain ID" value={chainId} onChange={setChainId} />
+      <FormRow label="RPC URL" value={rpc} onChange={setRpc} />
+      <AddressRow label="To Address" value={toAddress} onChange={setToAddress} onGetAccount={onGetAccount} />
+      <FormRow label="Amount" value={amount} onChange={setAmount} />
+      <FormRow label="Denom" value={denom} onChange={setDenom} />
+      <FormRow label="Memo" value={memo} onChange={setMemo} />
 
       <Button
         className="execute-button"

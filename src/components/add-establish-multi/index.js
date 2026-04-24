@@ -3,6 +3,7 @@ import { Button, Card, Col, Input, Row } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { existsWallet } from '../../methods/injection';
 import { addEstablishMulti } from '../../methods/cosmos';
+import { formatError } from '../../utils/json';
 
 function AddEstablishMulti() {
   const [siteName, setSiteName] = useState('');
@@ -21,7 +22,7 @@ function AddEstablishMulti() {
 
     addEstablishMulti(siteName, parsed.length ? parsed : undefined)
       .then(res => setResponse(JSON.stringify(res, null, 2)))
-      .catch(error => setResponse(JSON.stringify(error, null, 2)));
+      .catch(error => setResponse(formatError(error)));
   };
 
   return (

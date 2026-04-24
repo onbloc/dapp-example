@@ -18,6 +18,13 @@ const ATOMONE_NETWORKS = {
     },
 };
 
+// Chain IDs registered by default in the Adena extension (see
+// packages/adena-extension/src/resources/chains/chains.json).
+const GNO_NETWORKS = {
+    mainnet: { chainId: 'gnoland1' },
+    testnet: { chainId: 'staging' },
+};
+
 // Browser-safe Uint8Array -> base64 (Buffer is not polyfilled by CRA 5).
 const bytesToBase64 = (bytes) => {
     let binary = '';
@@ -171,4 +178,5 @@ export {
     buildAminoSignDoc,
     bytesToBase64,
     ATOMONE_NETWORKS,
+    GNO_NETWORKS,
 };

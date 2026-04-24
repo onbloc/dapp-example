@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Button, Card, Col, Input, Row } from "antd";
+import { Button, Card, Col, Input, Row, Space } from "antd";
 
-import { existsWallet, doContractPackageFunction } from "../../methods/injection";
+import { existsWallet, getAccount, doContractPackageFunction } from "../../methods/injection";
 import TextArea from "antd/es/input/TextArea";
 
 function PackageRequest() {
@@ -21,6 +21,23 @@ function PackageRequest() {
       .catch(error => console.error(error))
   };
 
+  const handleGetAccount = async (setter) => {
+    if (!existsWallet()) {
+      return;
+    }
+    try {
+      const res = await getAccount();
+      const address = res?.data?.address;
+      if (address) {
+        setter(address);
+      } else {
+        setResponse(JSON.stringify(res, null, 2));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Card
       className="card"
@@ -32,10 +49,13 @@ function PackageRequest() {
           <span>caller: </span>
         </Col>
         <Col lg={18} flex>
-          <Input
-            value={caller}
-            onChange={event => setCaller(event.target.value)}
-          />
+          <Space.Compact style={{ width: '100%' }}>
+            <Input
+              value={caller}
+              onChange={event => setCaller(event.target.value)}
+            />
+            <Button onClick={() => handleGetAccount(setCaller)}>Get Account</Button>
+          </Space.Compact>
         </Col>
       </Row>
 

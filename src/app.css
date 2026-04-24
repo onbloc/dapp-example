@@ -47,3 +47,13 @@
 hr {
   display: flex;
 }
+
+.section-title {
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 32px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #3a3a45;
+  padding-bottom: 8px;
+}

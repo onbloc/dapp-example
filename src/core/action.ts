@@ -23,6 +23,16 @@ export interface FieldDef {
   resolver?: { label: string; resolve: (values: FormValues) => Promise<string> };
 }
 
+// Preset that fills the action's form from a few inputs, e.g. a swap transaction from a caller and an amount.
+export interface ActionTemplate {
+  id: string;
+  label: string;
+  description: string;
+  fields: FieldDef[];
+  defaults: FormValues;
+  apply: (input: FormValues) => Promise<FormValues>;
+}
+
 interface ActionBase {
   id: string;
   group: string;
@@ -30,6 +40,7 @@ interface ActionBase {
   description: string;
   fields: FieldDef[];
   defaults: FormValues;
+  templates?: ActionTemplate[];
 }
 
 export interface InvokeAction extends ActionBase {

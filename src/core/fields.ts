@@ -4,7 +4,8 @@ import type { FieldDef, FormValues } from './action';
 
 export const CUSTOM = 'custom';
 
-export const networkField = (presets: NetworkPreset[], withRpc = false): FieldDef => ({
+// `customChainId` is filled when "Custom" is selected; otherwise the current chain ID is kept.
+export const networkField = (presets: NetworkPreset[], withRpc = false, customChainId?: string): FieldDef => ({
   name: 'network',
   label: 'Network',
   type: 'segmented',
@@ -12,7 +13,7 @@ export const networkField = (presets: NetworkPreset[], withRpc = false): FieldDe
   onChange: (value): FormValues => {
     const preset = presets.find(item => item.chainId === value);
     if (!preset) {
-      return {};
+      return customChainId ? { chainId: customChainId } : {};
     }
     return withRpc ? { chainId: preset.chainId, rpc: preset.rpc ?? '' } : { chainId: preset.chainId };
   },

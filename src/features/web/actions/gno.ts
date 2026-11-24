@@ -1,4 +1,4 @@
-import { GNO_EXTENSION_NETWORKS, GNO_MOBILE_NETWORKS } from '@/config/networks';
+import { GNO_EXTENSION_CUSTOM_CHAIN_ID, GNO_EXTENSION_NETWORKS, GNO_MOBILE_NETWORKS } from '@/config/networks';
 import type { FieldDef, FormValues, InvokeAction } from '@/core/action';
 import { chainIdField, commaList, networkDefaults, networkField, required } from '@/core/fields';
 import { msgCall, msgSend, splitArgs } from '@/core/gno-messages';
@@ -45,7 +45,7 @@ export const addEstablish: InvokeAction = {
   description: 'Registers this site as trusted. Optional chain IDs connect several chains (Gno + AtomOne) at once.',
   fields: [
     { name: 'siteName', label: 'Site name', placeholder: 'My dApp' },
-    { name: 'chainIds', label: 'Chain IDs', mono: true, placeholder: 'gnoland1, atomone-1 (blank = current chain group)' },
+    { name: 'chainIds', label: 'Chain IDs', mono: true, placeholder: 'gnoland-1, atomone-1 (blank = current chain group)' },
   ],
   defaults: { siteName: 'Adena dApp Example', chainIds: '' },
   preview: values => {
@@ -76,7 +76,7 @@ export const switchNetwork: InvokeAction = {
   group: 'wallet',
   title: 'Switch Network',
   description: 'Asks the wallet to switch to another Gno chain. Testnet chain IDs also switch the network mode.',
-  fields: [networkField(GNO_EXTENSION_NETWORKS), chainIdField(GNO_EXTENSION_NETWORKS, 'gnoland1, staging, dev')],
+  fields: [networkField(GNO_EXTENSION_NETWORKS, false, GNO_EXTENSION_CUSTOM_CHAIN_ID), chainIdField(GNO_EXTENSION_NETWORKS, 'gnoland-1, onyx-1, dev')],
   defaults: networkDefaults(GNO_EXTENSION_NETWORKS[0]),
   preview: values => `window.adena.SwitchNetwork(${JSON.stringify(values.chainId.trim())})`,
   run: values => adena().SwitchNetwork(values.chainId.trim()),

@@ -6,9 +6,12 @@ export interface NetworkPreset {
 
 // Chain IDs registered by default in the Adena extension (packages/adena-extension/src/resources/chains/chains.json).
 export const GNO_EXTENSION_NETWORKS: NetworkPreset[] = [
-  { label: 'Mainnet', chainId: 'gnoland1' },
-  { label: 'Testnet', chainId: 'staging' },
+  { label: 'Mainnet', chainId: 'gnoland-1' },
+  { label: 'Testnet', chainId: 'onyx-1' },
 ];
+
+// Chain ID filled when "Custom" is selected for the extension networks.
+export const GNO_EXTENSION_CUSTOM_CHAIN_ID = 'dev';
 
 // Networks bundled with Adena Mobile (packages/adena-mobile/src/resources/chains/gno-networks.json).
 export const GNO_MOBILE_NETWORKS: NetworkPreset[] = [

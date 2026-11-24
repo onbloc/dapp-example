@@ -67,7 +67,7 @@ export const Field = ({ field, value, values, onChange, onError }: FieldProps) =
           <div className="input-group">
             <input id={id} className={className} value={value} placeholder={field.placeholder} spellCheck={false} autoComplete="off" onChange={event => onChange(event.target.value)} />
             {field.resolver && (
-              <Button size="sm" variant="ghost" loading={resolving} onClick={resolve}>
+              <Button size="sm" variant="secondary" loading={resolving} onClick={resolve}>
                 {field.resolver.label}
               </Button>
             )}

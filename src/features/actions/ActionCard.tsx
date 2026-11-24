@@ -15,6 +15,7 @@ import { Field } from '@/ui/Field';
 import { ExternalIcon, PlayIcon, QrIcon } from '@/ui/icons';
 
 import { QrCode } from './QrCode';
+import { TemplatePanel } from './TemplatePanel';
 
 interface Outcome {
   status: HistoryStatus;
@@ -100,6 +101,17 @@ export const ActionCard = ({ action }: { action: ActionDef }) => {
         </div>
         <Badge tone={action.kind === 'deeplink' ? 'accent' : 'neutral'}>{action.kind === 'deeplink' ? 'deep link' : 'extension'}</Badge>
       </header>
+
+      {action.templates && (
+        <TemplatePanel
+          templates={action.templates}
+          onApply={patch => {
+            setValues(prev => ({ ...prev, ...patch }));
+            setOutcome(null);
+          }}
+          onError={fail}
+        />
+      )}
 
       {action.fields.length > 0 && (
         <div className="fields">

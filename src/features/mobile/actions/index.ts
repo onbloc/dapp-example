@@ -1,10 +1,11 @@
 import { GNO_MOBILE_NETWORKS } from '@/config/networks';
 import type { ActionGroup, DeepLinkAction, FieldDef, FormValues } from '@/core/action';
 import { chainIdField, networkDefaults, networkField, required } from '@/core/fields';
+import { msgCall, msgSend, splitArgs } from '@/core/gno-messages';
 import { parseJson } from '@/lib/json';
 
-import { msgCall, msgSend, splitArgs } from '@/core/gno-messages';
 import { mobileSessionStore } from '../mobile.store';
+import { gnotToGnsSwapTemplate } from '../templates/gnoswap-swap';
 import { assertMessages, type DappMethod, type GnoMessage, type TransactionParams } from '../protocol';
 
 const DEFAULT_NETWORK = GNO_MOBILE_NETWORKS[0];
@@ -134,6 +135,7 @@ const multiMessage: DeepLinkAction = {
     ...feeFields,
   ],
   defaults: { ...txDefaults, signer: '', messages: SAMPLE_MESSAGES },
+  templates: [gnotToGnsSwapTemplate(useConnected)],
   build: values => {
     const messages = assertMessages(parseJson(values.messages, 'Messages'));
     return transaction(values, values.signer.trim() ? withSigner(messages, values.signer.trim()) : messages);
